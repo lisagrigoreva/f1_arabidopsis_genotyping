@@ -27,7 +27,7 @@ bcftools view -R regions.bed $input_progeny -Oz -o $output_progeny
 ```
 python
 import allel
-allel.vcf_to_hdf5('input.vcf', 'output.h5', fields='*', overwrite=True)
+allel.vcf_to_hdf5('input.vcf', 'output.hdf5', fields='*', overwrite=True)
 ```
 
 Required input files:
