@@ -5,25 +5,27 @@ This repository contains code to check genotyping for A. thaliana using a set of
 To reduce computational time and also accuracy we will work with genic regions only.For this you will need to extract only genic regions from both vcf matricies . Make sure you use updated SNP matrix without heterozygous calls and individuals
 TAIR10.gff file should be converted to the TAIR10.bed
 
+```
 gff2bed < TAIR10_GFF3_genes.gff | grep 'gene' > TAIR10_GFF3_genes.bed
-
+```
 2) Using obtained gene bed file prepare 2 matricies: 1001G genic regions and genotype expected genic regions
-
+```
 $input_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.vcf.gz
 $output_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.genes.vcf.gz
 bcftools index $input_parents
   regions.bed $input_parents -o $output_parents
-
-
+```
+```
 $input_progeny=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.vcf.gz
 $output_progeny=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.genes.vcf.gz
 bcftools index $input_progeny
 bcftools view -R regions.bed $input_progeny -o $output_progeny
-
+```
 # Convert both files (paternal and progeny ) to the hdf5 format using scikit-allel
+```
 import allel
 allel.vcf_to_hdf5('input.vcf', 'output.h5', fields='*', overwrite=True)
-
+```
 
 
 - Positions of genes in 1001G matrix (hd5 file)
