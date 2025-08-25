@@ -13,15 +13,16 @@ gff2bed < TAIR10_GFF3_genes.gff | grep 'gene' > TAIR10_GFF3_genes.bed
 ```
 input_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.vcf.gz
 output_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.genes.vcf.gz
-bcftools index $input_parents # Index the input VCF file
-bcftools view -R regions.bed $input_parents -Oz -o $output_parents # Extract regions from the VCF file using a BED file
-```
-```
+
 input_progeny=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.vcf.gz
 output_progeny=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.genes.vcf.gz
-bcftools index $input_progeny # Index the input VCF file
-bcftools view -R regions.bed $input_progeny -Oz -o $output_progeny # Extract regions from the VCF file using a BED file
+
+bcftools index $input_parents # Index the input VCF file
+bcftools index $input_progeny 
+bcftools view -R regions.bed $input_parents -Oz -o $output_parents # Extract regions from the VCF file using a BED file
+bcftools view -R regions.bed $input_progeny -Oz -o $output_progeny 
 ```
+
 - Convert both files (paternal and progeny ) to the hdf5 format using scikit-allel
 ```
 python
