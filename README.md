@@ -28,10 +28,13 @@ import allel
 allel.vcf_to_hdf5('input.vcf', 'output.h5', fields='*', overwrite=True)
 ```
 
+Required input files:
+- genic regions in h5 format of 1001G
+- genic regions in h5 format of samples 
+- expected parents
 
-- Positions of genes in 1001G matrix (hd5 file)
-- Expected parents file containing 3 columns (tab separated):
------
-file id - parent 1 -parent 2
-- output directory
+|----------------|------------------------------|-----------------------------|
+| ID in vcf file | Expected parent 1 from 1001G |Expected parent 2 from 1001G |
+
+
   
