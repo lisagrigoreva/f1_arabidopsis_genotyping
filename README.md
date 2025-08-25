@@ -40,3 +40,15 @@ Required input files:
 | 294314         | 6909                         | 7130                         |
 | 294315         | 6909                         | 8348                         |
 | 294317         | 6909                         | 15592                        |
+
+
+### Run genotyping
+------
+- Make files with depth and alleles for every site for expected parents 
+```
+python prepare_genotypes.py -i genotypes.hdf5 -p parents.txt -o output_dir
+```
+
+
+
+
