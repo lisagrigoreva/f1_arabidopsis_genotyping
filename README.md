@@ -1,4 +1,4 @@
-# f1_arabidopsis_genotyping
+# Arabidopsis genotyping 
 This repository contains code to check genotyping for A. thaliana using a set of expected parents from 1001G matrix. 
 
 ### Prepare input files
