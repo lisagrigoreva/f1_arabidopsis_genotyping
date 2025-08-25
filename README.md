@@ -1,7 +1,8 @@
 ## Arabidopsis genotyping 
 This repository contains code to check genotyping for A. thaliana using a set of expected parents from 1001G matrix. 
 
-#### Prepare input files
+### Prepare input files
+------
 To reduce computational time and also accuracy we will work with genic regions only.For this you will need to extract only genic regions from both vcf matricies . Make sure you use updated SNP matrix without heterozygous calls and individuals
 TAIR10.gff file should be converted to the TAIR10.bed
 
