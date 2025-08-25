@@ -33,8 +33,5 @@ Required input files:
 - genic regions in h5 format of samples 
 - expected parents
 
-|----------------|------------------------------|-----------------------------|
-| ID in vcf file | Expected parent 1 from 1001G |Expected parent 2 from 1001G |
-
-
-  
+| ID in vcf file | Expected parent 1 from 1001G | Expected parent 2 from 1001G |
+|----------------|------------------------------|------------------------------|
