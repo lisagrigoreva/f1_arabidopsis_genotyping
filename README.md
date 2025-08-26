@@ -58,6 +58,13 @@ python parent_classifier.py genotypes.hdf5 parents.txt output_dir
 ```
 python create_intersections_with_pmf.py  genotypes_progeny_output_dir/ all_snps_classified_parents_output_dir/ intersections/
 ```
+- Create a likelihood table for each sample (sorted based on the probability of match)
+
+```
+python create_likelihood_table.py intersections_path/
+```
+
+
 
 
 
