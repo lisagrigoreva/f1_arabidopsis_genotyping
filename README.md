@@ -54,6 +54,10 @@ python prepare_genotypes.py -i genotypes.hdf5 -p parents.txt -o output_dir
 ```
 python parent_classifier.py genotypes.hdf5 parents.txt output_dir
 ```
+- Create all pairwise combinations of parental-accessions pairs and add PMF to every intersection
+```
+```
+
 
 
 
