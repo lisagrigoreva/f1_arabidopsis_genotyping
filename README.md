@@ -48,7 +48,7 @@ Required input files:
 ```
 python prepare_genotypes.py -i genotypes.hdf5 -p parents.txt -o output_dir
 ```
-- Make files with expected parents pairs and add thetha for every site. If the site is homozygous (0/0 or 1/1), thehta=0+0.0001; if the site is heterozygous, thetha is set to 0.5
+- Make files with expected parents pairs and add thetha for every site. If the site is homozygous (0/0 or 1/1), θ=0+0.0001; if the site is heterozygous, θ is set to 0.5
   
 ```
 python parent_classifier.py 1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.pos_genes_progeny.hdf5  expected_parents.txt all_snps_classified_parents
