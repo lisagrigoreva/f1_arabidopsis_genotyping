@@ -56,6 +56,7 @@ python parent_classifier.py genotypes.hdf5 parents.txt output_dir
 ```
 - Create all pairwise combinations of parental-accessions pairs and add PMF to every intersection
 ```
+python intersect_with_pmf.py  genotypes_progeny_output_dir/ all_snps_classified_parents_output_dir/ intersections/
 ```
 
 
