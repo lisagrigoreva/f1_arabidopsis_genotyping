@@ -11,16 +11,17 @@ gff2bed < TAIR10_GFF3_genes.gff | grep 'gene' > TAIR10_GFF3_genes.bed
 ```
 - Using obtained gene bed file prepare 2 matricies: 1001G genic regions and genotype expected genic regions
 ```
+input_progeny=genotyped.samples.snps.variant_non_variant.vcf.gz
+output_progeny=genotyped.samples.snps.variant_non_variant.genes.vcf.gz
+
 input_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.vcf.gz
-output_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.genes.vcf.gz
+output_parents=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.pos_of_interest_genes.vcf.gz
 
-input_progeny=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.vcf.gz
-output_progeny=1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.genes.vcf.gz
-
-bcftools index $input_parents # Index the input VCF file
 bcftools index $input_progeny 
-bcftools view -R regions.bed $input_parents -Oz -o $output_parents # Extract regions from the VCF file using a BED file
-bcftools view -R regions.bed $input_progeny -Oz -o $output_progeny 
+bcftools view -R regions.bed $input_progeny -Oz -o $output_progeny
+# Extract progeny SNPs from 1001G matrix
+zcat $output_progeny | cut -f 1,2 >positions_progeny.txt
+bcftools view -R positions_progeny.txt $input_parents -Oz -o $output_parents
 ```
 
 - Convert both files (paternal and progeny ) to the hdf5 format using scikit-allel
@@ -51,7 +52,7 @@ python prepare_genotypes.py -i genotypes.hdf5 -p parents.txt -o output_dir
 - Make files with expected parents pairs and add thetha for every site. If the site is homozygous (0/0 or 1/1), θ=0+0.0001; if the site is heterozygous, θ is set to 0.5
   
 ```
-python parent_classifier.py 1163g.179kB.prior15.gauss4.ts99.5.BIALLELIC.heterozygous_acc_removed.hetmasked.pos_genes_progeny.hdf5  expected_parents.txt all_snps_classified_parents
+python parent_classifier.py genotypes.hdf5 parents.txt output_dir
 ```
 
 
