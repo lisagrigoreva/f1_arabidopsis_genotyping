@@ -47,8 +47,16 @@ Required input files:
 ------
 - Make files with depth and alleles for every site for expected parents 
 ```
-python prepare_genotypes.py -i genotypes.hdf5 -p parents.txt -o output_dir
+python prepare_genotypes.py -i genotypes_progeny.hdf5 -p parents.txt -o output_dir
 ```
+- You might want to filter uninformative sites (depth>5)
+
+```
+for file in *.txt; do
+    awk 'NR==1 || NR==2 || $7 > 5' "$file" > "${file%.txt}_filtered.txt"
+done
+```
+
 - Make files with expected parents pairs and add thetha for every site. If the site is homozygous (0/0 or 1/1), θ=0+0.0001; if the site is heterozygous, θ is set to 0.5
   
 ```
