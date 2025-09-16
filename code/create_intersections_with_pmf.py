@@ -17,7 +17,7 @@ from functools import partial
 from scipy.stats import binom
 
 def extract_progeny_id(filename):
-    """Extract progeny ID from the filename (format: progeny_parent1_parent2.txt)."""
+    """Extract progeny ID from the filename (format: progeny_parent1_parent2_filtered.txt)."""
     basename = os.path.basename(filename)
     # Remove _filtered.txt suffix first
     name_without_suffix = basename.replace('_filtered.txt', '')
