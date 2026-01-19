@@ -32,8 +32,8 @@ allel.vcf_to_hdf5('input.vcf', 'output.hdf5', fields='*', overwrite=True)
 ```
 
 Required input files:
-- genic regions in h5 format of 1001G
-- genic regions in h5 format of samples 
+- genic regions in hdf5 format of 1001G
+- genic regions in hdf5 format of samples 
 - expected parents
 
 | ID in vcf file | Expected parent 1 from 1001G | Expected parent 2 from 1001G |
@@ -43,13 +43,21 @@ Required input files:
 | 294317         | 6909                         | 15592                        |
 
 
+############### Step 1 ############### 
 ### Prepare progeny files 
 ------
 - Make files containing sample id, chromosome, position, parent1,parent2, genotype (ref/alt), allelic depth (ref depth/alt depth) and total depth
 ```
 python prepare_progeny.py -i genotypes_progeny.hdf5 -p parents.txt -o output_dir
 ```
+Expected output looks like this:
 
+| Sample_ID | Chromosome | Position | Parent1 | Parent2 | Genotype | Allelic_depth | Total_depth |
+|-----------|------------|----------|---------|---------|----------|---------------|-------------|
+| 299410    | Chr1       | 7020     | 6909    | 9409    | 0/0      | 7/0           | 8           |
+| 299410    | Chr1       | 7035     | 6909    | 9409    | 0/0      | 7/0           | 7           |
+
+############### Step 2 ############### 
 ### Run genotyping and accession probability assignment  
 
 ```
