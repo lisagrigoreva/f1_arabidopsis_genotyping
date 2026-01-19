@@ -43,34 +43,59 @@ Required input files:
 | 294317         | 6909                         | 15592                        |
 
 
-### Run genotyping
+### Prepare progeny files 
 ------
-- Make files with depth and alleles for every site for expected parents 
+- Make files containing sample id, chromosome, position, parent1,parent2, genotype (ref/alt), allelic depth (ref depth/alt depth) and total depth
 ```
-python prepare_genotypes.py -i genotypes_progeny.hdf5 -p parents.txt -o output_dir
-```
-- You might want to filter uninformative sites (depth>5)
-
-```
-for file in *.txt; do
-    awk 'NR==1 || NR==2 || $7 > 5' "$file" > "${file%.txt}_filtered.txt"
-done
+python prepare_progeny.py -i genotypes_progeny.hdf5 -p parents.txt -o output_dir
 ```
 
-- Make files with expected parents pairs and add thetha for every site. If the site is homozygous (0/0 or 1/1), θ=0+0.0001; if the site is heterozygous, θ is set to 0.5
-  
-```
-python parent_classifier.py genotypes.hdf5 parents.txt output_dir
-```
-- Create all pairwise combinations of parental-accessions pairs and add PMF to every intersection 
-```
-python create_intersections_with_pmf.py  genotypes_progeny_output_dir/ all_snps_classified_parents_output_dir/ intersections/
-```
-- Create a likelihood table for each sample (sorted based on the probability of match)
+### Run genotyping and accession probability assignment  
 
 ```
-python create_likelihood_table.py intersections_path/
+python calc_probabilities.py genotypes_parents.hdf5 ./output_folder_previous_step/ 
 ```
+
+
+Binomial likelihood test is applied for each parental combination and progeny file. **Expected** transition probabilities for each site are set based on the 1001G crosses. For this, only intersecting positions between progeny and parental 1001G file are considered. For every position expected $\theta is reported
+
+- 0/0 results to $\theta=0.0001$
+- 0/1 results to $\theta=0.5$
+- 1/1 results to $\theta=0.9999$
+
+ 
+**Observed** transition probabilities are calculated based on the number of reads attributed to the alternative allele (y in equation) in RNASeq data. In VCF file field AD for each site has a format (ref, alt). Thus, alt were taken. 
+PMF is calculated for each site as:
+```
+binom.pmf(alt_counts, total_counts, thetha)
+```
+
+Where:
+
+- alt_counts - number of alternative alleles from AD field
+- total_counts - depth from DP field
+- thetha - thetha for this site in every parental combination 
+
+Finally, the product of probabilites been summed up across all sites in RNASeq data. Additionally, its been normilized to the number of SNPs, because for every progeny file ir differs:
+
+$\frac{1}{u} \sum_i \ln \Pr(y_i \mid \theta)$ 
+Where  $u$ is the number of SNPs in each progeny file.
+basically:
+```
+binom.pmf(alt_counts, total_counts, thetha)/u
+```
+A small PMF value means that the observed alt_counts in the progeny is unlikely given the expected allele frequency ($\theta$)
+Normilized likelihood ratios from every parental combination has been attributed for each progeny file.
+Then, PMF values were transformed to the probabilities
+$\frac{\exp{\lambda_i}}{\sum_i\exp(\lambda)}$
+
+Where exp is PMF and sum is normilized by the number of observed SNPs in each parental-progeny file. 
+
+We are getting to values to focus on:
+1) Normilized likelihood ( the closer to 0 the most likely that observed parents are real)
+2) Probability. (The higher the probability the most likely that observed parents are real)
+
+
 
 
 
