@@ -63,7 +63,7 @@ python calc_probabilities.py genotypes_parents.hdf5 ./output_folder_previous_ste
 ```
 
 
-Binomial likelihood test is applied for each parental combination and progeny file. **Expected** transition probabilities for each site are set based on the 1001G crosses. For this, only intersecting positions between progeny and parental 1001G file are considered. For every position expected $\theta is reported
+Binomial likelihood test is applied for each parental combination and progeny file. **Expected** transition probabilities for each site are set based on the 1001G crosses. For this, only intersecting positions between progeny and parental 1001G file are considered. For every position expected $\theta$ is reported
 
 - 0/0 results to $\theta=0.0001$
 - 0/1 results to $\theta=0.5$
