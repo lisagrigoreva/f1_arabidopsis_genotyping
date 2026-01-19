@@ -42,8 +42,6 @@ Required input files:
 | 294315         | 6909                         | 8348                         |
 | 294317         | 6909                         | 15592                        |
 
-
-############### Step 1 ############### 
 ### Prepare progeny files 
 ------
 - Make files containing sample id, chromosome, position, parent1,parent2, genotype (ref/alt), allelic depth (ref depth/alt depth) and total depth
