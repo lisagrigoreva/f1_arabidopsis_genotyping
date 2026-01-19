@@ -57,7 +57,7 @@ Expected output looks like this:
 | 299410    | Chr1       | 7020     | 6909    | 9409    | 0/0      | 7/0           | 8           |
 | 299410    | Chr1       | 7035     | 6909    | 9409    | 0/0      | 7/0           | 7           |
 
-############### Step 2 ############### 
+ 
 ### Run genotyping and accession probability assignment  
 
 ```
