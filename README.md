@@ -1,5 +1,5 @@
 ## Arabidopsis genotyping 
-This repository contains code to check genotyping for A. thaliana using a set of expected parents from 1001G matrix. 
+This repository contains code to check genotyping for A. thaliana using a set of expected parents from 1001G VCF. 
 
 ### Prepare input files
 ------
