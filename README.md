@@ -73,7 +73,7 @@ Binomial likelihood test is applied for each parental combination and progeny fi
 **Observed** transition probabilities are calculated based on the number of reads attributed to the alternative allele (y in equation) in RNASeq data. In VCF file field AD for each site has a format (ref, alt). Thus, alt were taken. 
 PMF is calculated for each site as:
 ```
-binom.pmf(alt_counts, total_counts, thetha)
+binom.pmf(alt_counts, total_counts, $\theta$)
 ```
 
 Where:
@@ -88,7 +88,7 @@ $\frac{1}{u} \sum_i \ln \Pr(y_i \mid \theta)$
 Where  $u$ is the number of SNPs in each progeny file.
 basically:
 ```
-binom.pmf(alt_counts, total_counts, thetha)/u
+binom.pmf(alt_counts, total_counts, $\theta$)/u
 ```
 A small PMF value means that the observed alt_counts in the progeny is unlikely given the expected allele frequency ($\theta$)
 Normilized likelihood ratios from every parental combination has been attributed for each progeny file.
