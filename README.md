@@ -1,4 +1,4 @@
-## Arabidopsis genotyping 
+## Arabidopsis F1 genotyping 
 This repository contains code to check genotyping for A. thaliana using a set of expected parents from 1001G VCF. 
 
 ### Prepare input files
@@ -149,6 +149,10 @@ Accounts for total evidence strength
 - Number of SNPs: Number of overlapping positions used in the calculation
 More SNPs generally provide more confident assignments
 
+Top parental results can be combine using awk:
+```
+ awk 'FNR==1 {if (NR==1) print} FNR==2 {print}' *_top20.txt > combined_results.txt
+```
 
 
 
