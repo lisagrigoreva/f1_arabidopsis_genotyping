@@ -106,7 +106,7 @@ $$\text{LL} = \sum_{i=1}^{u} \ln(\text{PMF})$$
 
 **Normalized log-likelihood** (to account for different numbers of SNPs across progeny):
 
-$$\text{Norm\_LL} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF})$$
+$$\text{LL}_{\text{norm}} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
 
 Where:
 - $u$ = Number of overlapping SNPs between progeny and parental pair
