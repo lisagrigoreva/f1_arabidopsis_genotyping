@@ -114,6 +114,13 @@ Where:
 
 
 #### Probability Calculation
+Input files:
+- File with processed progeny 
+- Directory with parents classified
+- Output file name 
+```
+python 003_calc_probabilities.py 299528_6909_9938.txt parent_classifications_dir results_299528.txt
+```
 
 To convert log-likelihoods into probabilities that sum to 1 across all tested parental pairs, we use normilized exponential function:
 
