@@ -42,64 +42,90 @@ Required input files:
 | 294315         | 6909                         | 8348                         |
 | 294317         | 6909                         | 15592                        |
 
+####################################
+#####      Preprocessing      #####
+###################################
 ### Prepare progeny files 
 ------
 - Make files containing sample id, chromosome, position, parent1,parent2, genotype (ref/alt), allelic depth (ref depth/alt depth) and total depth
 ```
-python prepare_progeny.py -i genotypes_progeny.hdf5 -p parents.txt -o output_dir
+python 001prepare_progeny.py genotypes_progeny.hdf5 parents.txt output_dir
 ```
 Expected output looks like this:
 
 | Sample_ID | Chromosome | Position | Parent1 | Parent2 | Genotype | Allelic_depth | Total_depth |
 |-----------|------------|----------|---------|---------|----------|---------------|-------------|
-| 299410    | Chr1       | 7020     | 6909    | 9409    | 0/0      | 7/0           | 8           |
+| 299410    | Chr1       | 7020     | 6909    | 9409    | 0/0      | 7/0           | 7           |
 | 299410    | Chr1       | 7035     | 6909    | 9409    | 0/0      | 7/0           | 7           |
 
  
-### Run genotyping and accession probability assignment  
-
+### Prepare parental files
+- Make files containing sample id, chromosome, position and $\theta for each parental combination from the list   
 ```
-python calc_probabilities.py genotypes_parents.hdf5 ./output_folder_previous_step/ 
+python 002prepare_parents.py genotypes_parents.hdf5 parents.txt output_dir
 ```
 
+####################################
+#####   Likelihood assignment  #####
+###################################
 
-Binomial likelihood test is applied for each parental combination and progeny file. **Expected** transition probabilities for each site are set based on the 1001G crosses. For this, only intersecting positions between progeny and parental 1001G file are considered. For every position expected $\theta$ is reported
+To assign the most probable parents, a binomial likelihood test is applied for each parental combination and progeny file. Expected allele frequencies ($\theta) for each site are set based on parental genotypes from the 1001G dataset. Only intersecting positions between progeny and parental files are considered for each parental combination.
+
+**Expected** Allele combinations ($\theta)
+For each position, the expected $\theta is determined from the parental genotype classification:
 
 - 0/0 results to $\theta=0.0001$
 - 0/1 results to $\theta=0.5$
 - 1/1 results to $\theta=0.9999$
 
- 
-**Observed** transition probabilities are calculated based on the number of reads attributed to the alternative allele (y in equation) in RNASeq data. In VCF file field AD for each site has a format (ref, alt). Thus, alt were taken. 
-PMF is calculated for each site as:
+**Observed** data from progeny
+For each site in the progeny RNA-seq data, we observe:
+- alt_counts: Number of reads supporting the alternative allele (from AD field)
+- total_counts: Total read depth (from DP field)
+
+**PMF Calculation** 
+For each site i, the probability of observing the progeny's allele counts given the parental genotype is calculated using the binomial PMF:
 
 binom.pmf(alt_counts, total_counts, $\theta$)
 
 Where:
 
-- alt_counts - number of alternative alleles from AD field
-- total_counts - depth from DP field
-- thetha - thetha for this site in every parental combination 
+- alt_counts - number of alternative alleles for the site from AD field
+- total_counts - depth for the site (DP field)
+- $\theta - Expected allele frequency at site i based on parental genotype
 
-Finally, the product of probabilites been summed up across all sites in RNASeq data. Additionally, its been normilized to the number of SNPs, because for every progeny file ir differs:
+A small PMF value indicates that the observed alt_counts in the progeny is unlikely given the expected allele frequency ($\theta) from that parental pair.
+To avoid numerical underflow, PMF is converted to the log-likelihood.
+LL = Σ ln(PMF_i)
+Normalized log-likelihood (to account for different numbers of SNPs across progeny):
+Norm_LL = (1/u) × Σ ln(PMF_i)
 
-$\frac{1}{u} \sum_i \ln \Pr(y_i \mid \theta)$ 
-Where  $u$ is the number of SNPs in each progeny file.
-basically:
+**Probability Calculation**
+To convert log-likelihoods into probabilities that sum to 1 across all tested parental pairs, we use the normilized exponential function.
 
-binom.pmf(alt_counts, total_counts, $\theta$)/$u$
+P(parent_pair_i | data) = exp(LL_i) / Σ_j exp(LL_j)
+Where:
 
-A small PMF value means that the observed alt_counts in the progeny is unlikely given the expected allele frequency ($\theta$)
-Normilized likelihood ratios from every parental combination has been attributed for each progeny file.
-Then, PMF values were transformed to the probabilities
-$\frac{\exp{\lambda_i}}{\sum_i\exp(\lambda)}$
+LL_i: Total log-likelihood for parent pair i
+Σ_j exp(LL_j): Sum over all tested parent pairs
 
-Where exp is PMF and sum is normilized by the number of observed SNPs in each parental-progeny file. 
+This gives the posterior probability that each parental pair is the true biological parent, given the observed progeny data.
 
-We are getting to values to focus on:
-1) Normilized likelihood ( the closer to 0 the most likely that observed parents are real)
-2) Probability. (The higher the probability the most likely that observed parents are real)
+Output Metrics
+For each progeny, we report:
 
+- Probability (%): The posterior probability that a given parental pair is correct
+Higher is better (>95% indicates high confidence)
+Values close to 100% indicate a clear, confident match
+- Normalized Log-Likelihood: The average log-likelihood per SNP
+Closer to 0 is better (indicates good fit)
+Values around -0.2 to -0.3 indicate good matches
+Values < -1.0 indicate poor matches
+- Total Log-Likelihood: The cumulative log-likelihood across all SNPs
+Used for probability calculation
+Accounts for total evidence strength
+- Number of SNPs: Number of overlapping positions used in the calculation
+More SNPs generally provide more confident assignments
 
 
 
