@@ -117,7 +117,7 @@ Where:
 
 To convert log-likelihoods into probabilities that sum to 1 across all tested parental pairs, we use normilized exponential function:
 
-$$\text{LL}_{\text{norm}} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
+$$P(\text{parent pair } j \mid \text{data}) = \frac{\exp(\text{LL}_j)}{\sum_{k=1}^{m} \exp(\text{LL}_k)}$$
 
 Where:
 - $\text{LL}_j$ = Total log-likelihood for parent pair $j$
