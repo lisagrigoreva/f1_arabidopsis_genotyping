@@ -49,7 +49,7 @@ Required input files:
 ------
 - Make files containing sample id, chromosome, position, parent1,parent2, genotype (ref/alt), allelic depth (ref depth/alt depth) and total depth
 ```
-python 001prepare_progeny.py genotypes_progeny.hdf5 parents.txt output_dir
+python 001_prepare_progeny.py genotypes_progeny.hdf5 parents.txt output_dir
 ```
 Expected output looks like this:
 
@@ -62,7 +62,7 @@ Expected output looks like this:
 ### Prepare parental files
 - Make files containing sample id, chromosome, position and $\theta for each parental combination from the list   
 ```
-python 002prepare_parents.py genotypes_parents.hdf5 parents.txt output_dir
+python 002_prepare_parents.py genotypes_parents.hdf5 parents.txt output_dir
 ```
 
 
