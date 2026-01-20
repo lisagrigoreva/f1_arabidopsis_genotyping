@@ -42,9 +42,9 @@ Required input files:
 | 294315         | 6909                         | 8348                         |
 | 294317         | 6909                         | 15592                        |
 
-####################################
-#####      Preprocessing      #####
-###################################
+
+## Preprocessing 
+
 ### Prepare progeny files 
 ------
 - Make files containing sample id, chromosome, position, parent1,parent2, genotype (ref/alt), allelic depth (ref depth/alt depth) and total depth
@@ -65,9 +65,8 @@ Expected output looks like this:
 python 002prepare_parents.py genotypes_parents.hdf5 parents.txt output_dir
 ```
 
-####################################
-#####   Likelihood assignment  #####
-###################################
+
+## Likelihood assignment 
 
 To assign the most probable parents, a binomial likelihood test is applied for each parental combination and progeny file. Expected allele frequencies ($\theta) for each site are set based on parental genotypes from the 1001G dataset. Only intersecting positions between progeny and parental files are considered for each parental combination.
 
@@ -96,18 +95,33 @@ Where:
 
 A small PMF value indicates that the observed alt_counts in the progeny is unlikely given the expected allele frequency ($\theta) from that parental pair.
 To avoid numerical underflow, PMF is converted to the log-likelihood.
-LL = Σ ln(PMF_i)
-Normalized log-likelihood (to account for different numbers of SNPs across progeny):
-Norm_LL = (1/u) × Σ ln(PMF_i)
 
-**Probability Calculation**
-To convert log-likelihoods into probabilities that sum to 1 across all tested parental pairs, we use the normilized exponential function.
+#### Log-Likelihood Calculation
 
-P(parent_pair_i | data) = exp(LL_i) / Σ_j exp(LL_j)
+To avoid numerical underflow when multiplying many small probabilities, we work with log-likelihoods.
+
+**Total log-likelihood** for a parental pair:
+
+$$\text{LL} = \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
+
+**Normalized log-likelihood** (to account for different numbers of SNPs across progeny):
+
+$$\text{Norm\_LL} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
+
 Where:
+- $u$ = Number of overlapping SNPs between progeny and parental pair
+- $\ln(\text{PMF}_i)$ = Natural logarithm of the PMF at site $i$
 
-LL_i: Total log-likelihood for parent pair i
-Σ_j exp(LL_j): Sum over all tested parent pairs
+
+#### Probability Calculation
+
+To convert log-likelihoods into probabilities that sum to 1 across all tested parental pairs, we use normilized exponential function:
+
+$$P(\text{parent\_pair}_j \mid \text{data}) = \frac{\exp(\text{LL}_j)}{\sum_{k=1}^{m} \exp(\text{LL}_k)}$$
+
+Where:
+- $\text{LL}_j$ = Total log-likelihood for parent pair $j$
+- $m$ = Total number of parent pairs tested
 
 This gives the posterior probability that each parental pair is the true biological parent, given the observed progeny data.
 
