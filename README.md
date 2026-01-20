@@ -120,7 +120,8 @@ To convert log-likelihoods into probabilities that sum to 1 across all tested pa
 $$P(\text{parent pair } j \mid \text{data}) = \frac{\exp(\text{LL}_j)}{\sum_{k=1}^{m} \exp(\text{LL}_k)}$$
 
 Where:
-- $\text{LL}_j$ = Total log-likelihood for parent pair $j$
+- $\text{LL}_j$ = Total log-likelihood for parent pair $j$ (parental combination from the expected parents)
+- $\text{LL}_k$ = Total log-likelihood for parent pair $k$ (any parent pair in the sum)
 - $m$ = Total number of parent pairs tested
 
 This gives the posterior probability that each parental pair is the true biological parent, given the observed progeny data.
