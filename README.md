@@ -102,22 +102,22 @@ To avoid numerical underflow when multiplying many small probabilities, we work 
 
 **Total log-likelihood** for a parental pair:
 
-$$\text{LL} = \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
+$$\text{LL} = \sum_{i=1}^{u} \ln(\text{PMF})$$
 
 **Normalized log-likelihood** (to account for different numbers of SNPs across progeny):
 
-$$\text{Norm\_LL} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
+$$\text{Norm\_LL} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF})$$
 
 Where:
 - $u$ = Number of overlapping SNPs between progeny and parental pair
-- $\ln(\text{PMF}_i)$ = Natural logarithm of the PMF at site $i$
+- $\ln(\text{PMF})$ = Natural logarithm of the PMF at site
 
 
 #### Probability Calculation
 
 To convert log-likelihoods into probabilities that sum to 1 across all tested parental pairs, we use normilized exponential function:
 
-$$P(\text{parent\_pair}_j \mid \text{data}) = \frac{\exp(\text{LL}_j)}{\sum_{k=1}^{m} \exp(\text{LL}_k)}$$
+$$\text{LL}_{\text{norm}} = \frac{1}{u} \sum_{i=1}^{u} \ln(\text{PMF}_i)$$
 
 Where:
 - $\text{LL}_j$ = Total log-likelihood for parent pair $j$
