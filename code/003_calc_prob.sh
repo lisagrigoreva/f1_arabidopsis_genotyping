@@ -7,7 +7,7 @@
 #SBATCH --output=logs/parent_finder_%A_%a.out
 #SBATCH --error=logs/parent_finder_%A_%a.err
 
-# NOTE: Submit this with: sbatch --array=1-N%100 run_parent_finder.sh
+# NOTE: Submit this with: sbatch --array=1-N%100 
 # where N = number of progeny files
 
 # Create directories
